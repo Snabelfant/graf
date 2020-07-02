@@ -1,21 +1,18 @@
-package function;
+package function
 
-public abstract class Function {
-    private Double lastX = null;
-    private Double lastY = null;
-    private Double lastT = null;
-    public XY compute(double t) {
-        double x = computeX(t);
-        double y = computeY(t);
+abstract class Function {
+    var lastX: Double? = null
+        private set
+    var lastY: Double? = null
+        private set
+    var lastT: Double? = null
+        private set
 
-        lastX = x;
-        lastY = y;
-        lastT = t;
-
-        return new XY(x, y);
+    fun compute(t: Double) : XY {
+        lastT = t
+        return XY(computeX(t).also { lastX = it }, computeY(t).also { lastY = it })
     }
 
-    abstract double computeX(double t);
-
-    abstract double computeY(double t);
+    abstract fun computeX(t: Double): Double
+    abstract fun computeY(t: Double): Double
 }

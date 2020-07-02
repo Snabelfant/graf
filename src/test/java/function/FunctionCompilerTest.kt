@@ -1,35 +1,24 @@
-package function;
+package function
 
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.Assertions
+import org.junit.jupiter.api.Test
 
-import java.io.IOException;
-import java.util.function.BooleanSupplier;
+internal class FunctionCompilerTest {
+    private var compiler = FunctionCompiler()
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class FunctionCompilerTest {
-
-    private FunctionCompiler compiler;
-
-    @BeforeEach
-    void init() throws IOException {
-        compiler = new FunctionCompiler();
+    @Test
+    @Throws(Exception::class)
+    fun compileOK() {
+        val success = compiler.compile("package test; class Z{}")
+        Assertions.assertEquals("", compiler.diagnostics)
+        Assertions.assertTrue(success)
     }
 
     @Test
-    void compileOK() throws Exception {
-        final boolean success = compiler.compile("test.Z", "package test; class Z{}");
-       assertSame("",compiler.getDiagnostics() );
-        assertTrue(success);
+    @Throws(Exception::class)
+    fun compileFail() {
+        val success = compiler.compile("package test; class Z{ int z = t;}")
+        Assertions.assertFalse(success)
+        Assertions.assertTrue(compiler.diagnostics.contains("cannot find symbol"))
     }
-
-    @Test
-    void compileFail() throws Exception {
-        final boolean success = compiler.compile("test.Z", "package test; class Z{ int z = t;}");
-        assertFalse(success);
-        assertTrue(compiler.getDiagnostics().contains("cannot find symbol"));
-    }
-
 }

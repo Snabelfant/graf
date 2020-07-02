@@ -1,51 +1,42 @@
-package function;
+package function
 
-import javax.tools.*;
-import java.io.File;
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.Collections;
+class FunctionBuilder( private val xCode: String, private val yCode: String) {
+    var diagnostics: String? = null
+        private set
 
-public class FunctionBuilder {
-    private String xCode;
-    private String yCode;
-    private FunctionCompiler compiler;
-    private String diagnostics;
+    private val compiler = FunctionCompiler()
 
-    public FunctionBuilder(String xCode, String yCode, FunctionCompiler compiler) {
-        this.xCode = xCode;
-        this.yCode = yCode;
-        this.compiler = compiler;
-    }
-
-    public Function build() throws Exception {
-        final boolean success = compiler.compile("function.XFunction", getCompleteSource());
-
-        if (success) {
-            final Class<?> cls = Class.forName("function.XFunction");
-            return (Function) cls.getConstructor().newInstance();
+    @Throws(Exception::class)
+    fun build(): Function? {
+        val className = "Z${System.currentTimeMillis()}"
+        val success = compiler.compile(completeSource(className))
+        return if (success) {
+            val cls = Class.forName("function.$className")
+            println(cls.declaredMethods.map { m -> m.name })
+            cls.getConstructor().newInstance() as Function
         } else {
-            diagnostics = compiler.getDiagnostics();
-            return null;
+            diagnostics = compiler.diagnostics
+            println(diagnostics)
+            null
         }
     }
 
-    public String getDiagnostics() {
-        return diagnostics;
-    }
-    private String getCompleteSource() {
-        return new StringBuilder()
-                .append("package function;")
-                .append("public class XFunction extends Function{")
-                .append("@Override ")
-                .append("double computeX(double t){")
-                .append(xCode)
-                .append(";}")
-                .append("@Override ")
-                .append("double computeY(double t){")
-                .append(yCode)
-                .append(";}")
-                .append("}")
-                .toString();
-    }
+    fun completeSource(className: String) =
+            """
+package function;
+import static java.lang.Math.*;
+class $className extends Function{
+  public $className(){}
+     @Override 
+     public double computeX(double t){
+       $xCode;
+     }
+     
+     @Override
+     public double computeY(double t){
+       $yCode;
+     }
+}
+             """
+
 }
