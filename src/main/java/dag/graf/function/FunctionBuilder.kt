@@ -28,8 +28,10 @@ class FunctionBuilder( private val xCode: String, private val yCode: String) {
             """
 package function;
 import static java.lang.Math.*;
+import java.util.Random;
 public class $className extends dag.graf.function.XYFunction{
   public $className(){}
+     private Random r = new Random();
      @Override 
      public double computeX(double t){
        ${if (xCode.contains("return")) xCode else "return $xCode"};

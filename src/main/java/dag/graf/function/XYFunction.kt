@@ -1,5 +1,7 @@
 package dag.graf.function
 
+import java.util.*
+
 typealias XY = Triple<Double, Double, Double>
 
 abstract class XYFunction() {
