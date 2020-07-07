@@ -18,23 +18,25 @@ class Graf : Application() {
         primaryStage.title = "Graf"
         primaryStage.scene = scene
 
-        val stageSizeListener = ChangeListener<Number> { _, _, _ -> println("Height: ${primaryStage.height} Width: ${primaryStage.width}"); }
-        scene.widthProperty().addListener(stageSizeListener)
-        scene.heightProperty().addListener(stageSizeListener)
+        val sceneSizeListener = ChangeListener<Number> { _, _, _ -> println("Height: ${scene.height} Width: ${scene.width}"); }
+        scene.widthProperty().addListener(sceneSizeListener)
+        scene.heightProperty().addListener(sceneSizeListener)
 
-        root.children += graf()
+        root.children += graf(scene)
         primaryStage.show()
     }
 
-    private fun graf(): Path {
+    private fun graf(scene: Scene): Path {
         val function = FunctionBuilder("10*t+ r.nextInt(5)", "10*t*abs(sin(t)+cos(t))").build()
-        val calculator = FunctionValues(function!!, 1.0, 200.0, 0.1)
-        calculator.calculate()
-        val xys = calculator.xys
+        val functionValues = FunctionValues(function!!, 1.0, 10.0, 1.0)
+        functionValues.calculate()
+
+        val sceneMapper = FilledSceneMapper(functionValues, scene.width, scene.height )
+        val sXYs = sceneMapper.toSXY()
 
         return Path().apply {
-            elements += MoveTo(xys.first().first, xys.first().second)
-            elements += xys.drop(1).map { LineTo(it.first, it.second) }
+            elements += MoveTo(sXYs.first().first, sXYs.first().second)
+            elements += sXYs.drop(1).map { LineTo(it.first, it.second) }
         }
     }
 

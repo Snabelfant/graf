@@ -1,20 +1,19 @@
 package dag.graf
 
-import dag.graf.function.XY
+import dag.graf.function.FXY
 import dag.graf.function.XYFunction
 
-
-class FunctionValues(private val XYFunction: XYFunction, private val fromT: Double, private val toT: Double, private val deltaT: Double) {
+class FunctionValues(private val XYFunction: XYFunction, fromT: Double, private val toT: Double, private val deltaT: Double) {
     var minX: Double = 0.0
     var maxX: Double = 0.0
     var minY: Double = 0.0
     var maxY: Double = 0.0
     private var currentT = fromT
-    lateinit var xys: List<XY>
+    lateinit var xys: List<FXY>
         private set
 
     fun calculate() {
-        xys = mutableListOf<XY>().apply {
+        xys = mutableListOf<FXY>().apply {
             while (currentT <= toT) {
                 add(XYFunction.compute(currentT))
                 currentT += deltaT
