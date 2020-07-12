@@ -14,7 +14,7 @@ import javafx.stage.Stage
 class Graf : Application() {
     override fun start(primaryStage: Stage) {
         val root = Group()
-        val scene = Scene(root, 600.toDouble(), 300.toDouble())
+        val scene = Scene(root, 1600.toDouble(), 1000.toDouble())
         primaryStage.title = "Graf"
         primaryStage.scene = scene
 
@@ -27,11 +27,11 @@ class Graf : Application() {
     }
 
     private fun graf(scene: Scene): Path {
-        val function = FunctionBuilder("10*t+ r.nextInt(5)", "10*t*abs(sin(t)+cos(t))").build()
-        val functionValues = FunctionValues(function!!, 1.0, 10.0, 1.0)
-        functionValues.calculate()
+        val xytFunction = FunctionBuilder("cos(t*t*t)", "sin(t*t)").buildXYTFunction()
+        val xytValues = XYTValues(xytFunction!!, 0.0, 150.0, 0.1)
+        xytValues.calculate()
 
-        val sceneMapper = FilledSceneMapper(functionValues, scene.width, scene.height )
+        val sceneMapper = FilledSceneMapper(xytValues, scene.width, scene.height )
         val sXYs = sceneMapper.toSXY()
 
         return Path().apply {

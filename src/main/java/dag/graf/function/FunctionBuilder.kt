@@ -2,21 +2,24 @@ package dag.graf.function
 
 import dag.graf.compiler.Compiler
 
-class FunctionBuilder( private val xCode: String, private val yCode: String) {
+class FunctionBuilder(private val xCode: String, private val yCode: String) {
     var diagnostics: String? = null
         private set
 
     private val compiler = Compiler()
 
     @Throws(Exception::class)
-    fun build(): XYFunction? {
+    fun buildXYTFunction() = build(::completeXYTSource) as XYTFunction?
+
+    @Throws(Exception::class)
+    private fun build(buildSource: (String) -> String): Any? {
         val className = "Z${System.currentTimeMillis()}"
-        val success = compiler.compile(completeSource(className), className)
+        val success = compiler.compile(buildSource(className), className)
         return if (success) {
             val cls = Class.forName("function.$className")
             println(cls.declaredMethods.map { it.name })
             println(cls.declaredConstructors.map { it.name + "/" + it.modifiers })
-            cls.getConstructor().newInstance() as XYFunction
+            cls.getConstructor().newInstance()
         } else {
             diagnostics = compiler.diagnostics
             println(diagnostics)
@@ -24,12 +27,12 @@ class FunctionBuilder( private val xCode: String, private val yCode: String) {
         }
     }
 
-    fun completeSource(className: String) =
+    private fun completeXYTSource(className: String) =
             """
 package function;
 import static java.lang.Math.*;
 import java.util.Random;
-public class $className extends dag.graf.function.XYFunction{
+public class $className extends dag.graf.function.XYTFunction{
   public $className(){}
      private Random r = new Random();
      @Override 
