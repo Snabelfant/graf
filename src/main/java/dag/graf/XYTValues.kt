@@ -3,22 +3,16 @@ package dag.graf
 import dag.graf.function.XYT
 import dag.graf.function.XYTFunction
 
-class XYTValues(private val XYTFunction: XYTFunction, fromT: Double, private val toT: Double, private val deltaT: Double) {
+class XYTValues(private val XYTFunction: XYTFunction, private val fromT: Double, private val toT: Double, private val deltaT: Double) {
     var minX: Double = 0.0
     var maxX: Double = 0.0
     var minY: Double = 0.0
     var maxY: Double = 0.0
-    private var currentT = fromT
     lateinit var xys: List<XYT>
         private set
 
     fun calculate() {
-        xys = mutableListOf<XYT>().apply {
-            while (currentT <= toT) {
-                add(XYTFunction.compute(currentT))
-                currentT += deltaT
-            }
-        }.toList()
+        xys = XYTFunction.compute(fromT, toT, deltaT)
 
         if (xys.isNotEmpty()) {
             minX = xys.minBy { it.first }!!.first

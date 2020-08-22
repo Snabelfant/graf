@@ -15,6 +15,6 @@ abstract class XYTFunction() {
         return xyts.toList()
     }
 
-    protected abstract fun computeX(t: Double): Double
-    protected abstract fun computeY(t: Double): Double
+    abstract fun computeX(t: Double): Double
+    abstract fun computeY(t: Double): Double
 }

@@ -1,5 +1,7 @@
 package dag.graf.function
 
+import kotlin.math.abs
+
 typealias XY = Pair<Double, Double>
 
 abstract class XYFunction() {
@@ -15,7 +17,7 @@ abstract class XYFunction() {
 
             while (y <= toY) {
                 val v = compute(x, y)
-                if (v < epsilon) {
+                if (abs(v) < epsilon) {
                     xys += Pair(x, y)
                 }
 

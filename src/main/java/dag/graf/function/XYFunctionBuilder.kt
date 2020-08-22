@@ -13,7 +13,7 @@ public class $className extends dag.graf.function.XYFunction{
   public $className(){}
      private Random r = new Random();
      @Override 
-     public double compute(double t){
+     public double compute(double x, double y){
        ${if (code.contains("return")) code else "return $code"};
      }
 }
