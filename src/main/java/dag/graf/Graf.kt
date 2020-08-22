@@ -1,6 +1,6 @@
 package dag.graf
 
-import dag.graf.function.FunctionBuilder
+import dag.graf.function.XYTFunctionBuilder
 import javafx.application.Application
 import javafx.beans.value.ChangeListener
 import javafx.scene.Group
@@ -27,7 +27,7 @@ class Graf : Application() {
     }
 
     private fun graf(scene: Scene): Path {
-        val xytFunction = FunctionBuilder("cos(t*t*t)", "sin(t*t)").buildXYTFunction()
+        val xytFunction = XYTFunctionBuilder("cos(t*t*t)", "sin(t*t)").buildXYTFunction()
         val xytValues = XYTValues(xytFunction!!, 0.0, 150.0, 0.1)
         xytValues.calculate()
 

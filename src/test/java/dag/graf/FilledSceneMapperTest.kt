@@ -1,13 +1,13 @@
 package dag.graf
 
-import dag.graf.function.FunctionBuilder
+import dag.graf.function.XYTFunctionBuilder
 import org.junit.jupiter.api.Test
 
 internal class FilledSceneMapperTest {
 
     @Test
     fun test() {
-        val xyFunction = FunctionBuilder("t", "t").buildXYTFunction()
+        val xyFunction = XYTFunctionBuilder("t", "t").buildXYTFunction()
         val functionValues = XYTValues(xyFunction!!, 0.0, 3.0, 1.0)
         functionValues.calculate()
         println(functionValues.xys)

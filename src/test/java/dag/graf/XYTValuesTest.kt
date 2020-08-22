@@ -1,6 +1,6 @@
 package dag.graf
 
-import dag.graf.function.FunctionBuilder
+import dag.graf.function.XYTFunctionBuilder
 import dag.graf.function.XYTFunction
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.Test
@@ -58,7 +58,7 @@ internal class XYTValuesTest {
 
     @Test
     fun testMany2() {
-        val function = FunctionBuilder("t-1", "t+1").buildXYTFunction()
+        val function = XYTFunctionBuilder("t-1", "t+1").buildXYTFunction()
         val calculator = XYTValues(function!!, 1.0, 3.9, 0.000001)
         calculator.calculate()
         val xys = calculator.xys

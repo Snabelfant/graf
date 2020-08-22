@@ -1,6 +1,6 @@
 package dag.graf
 
-import dag.graf.function.FXYT
+import dag.graf.function.XYT
 import dag.graf.function.XYTFunction
 
 class XYTValues(private val XYTFunction: XYTFunction, fromT: Double, private val toT: Double, private val deltaT: Double) {
@@ -9,11 +9,11 @@ class XYTValues(private val XYTFunction: XYTFunction, fromT: Double, private val
     var minY: Double = 0.0
     var maxY: Double = 0.0
     private var currentT = fromT
-    lateinit var xys: List<FXYT>
+    lateinit var xys: List<XYT>
         private set
 
     fun calculate() {
-        xys = mutableListOf<FXYT>().apply {
+        xys = mutableListOf<XYT>().apply {
             while (currentT <= toT) {
                 add(XYTFunction.compute(currentT))
                 currentT += deltaT

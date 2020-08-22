@@ -1,17 +1,20 @@
 package dag.graf.function
 
-typealias FXYT = Triple<Double, Double, Double>
+typealias XYT = Triple<Double, Double, Double>
 
 abstract class XYTFunction() {
-    var lastX: Double? = null
-        private set
-    var lastY: Double? = null
-        private set
-    var lastT: Double? = null
-        private set
+    fun compute(fromT: Double, toT: Double, deltaT: Double): List<XYT> {
+        val xyts = mutableListOf<XYT>()
+        var t = fromT
 
-    fun compute(t: Double) = FXYT(computeX(t).also { lastX = it }, computeY(t).also { lastY = it }, t.also { lastT = it })
+        while (t <= toT) {
+            xyts += XYT(computeX(t), computeY(t), t)
+            t += deltaT
+        }
 
-    abstract fun computeX(t: Double): Double
-    abstract fun computeY(t: Double): Double
+        return xyts.toList()
+    }
+
+    protected abstract fun computeX(t: Double): Double
+    protected abstract fun computeY(t: Double): Double
 }
